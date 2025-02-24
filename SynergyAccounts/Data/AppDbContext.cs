@@ -19,33 +19,33 @@ namespace SynergyAccounts.Data
         public DbSet<Branch> Branches { get; set; }
         public DbSet<Company> Companies { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+           
+            var adminRoleId = 1;
+            //var userRoleId = 2;
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    base.OnModelCreating(modelBuilder);
+            // Static ID for admin user (since UserId is INT, use fixed integer)
+            var adminId = 1;
 
-        //    // Static GUIDs for roles
-        //    var adminRoleId = new Guid("f47a9b25-3d0b-45ff-bc6a-8d0ad4f5e01e");
-        //    var userRoleId = new Guid("50c4d34b-c548-44f0-b2f5-401440e45ab1");
+            //  Seed roles
+            modelBuilder.Entity<Role>().HasData(
+                new Role { Id = adminRoleId, Name = "Admin" }
+                //new Role { Id = userRoleId, Name = "User" }
+            );
 
-        //    // Static GUID for the admin user
-        //    var adminId = new Guid("53e3998d-38f0-4659-b02f-6ab056f49ea7");
+            //  Seed default admin user
+            modelBuilder.Entity<User>().HasData(
+                new User { Id = adminId, Email = "admin@.com", PasswordHash = "admin123", FullName = "Super Admin", BranchId = null }
+            );
 
-        //    // Seed roles
-        //    modelBuilder.Entity<Role>().HasData(
-        //        new Role { Id = adminRoleId, Name = "Admin" },
-        //        new Role { Id = userRoleId, Name = "User" }
-        //    );
+            //  Assign admin user to "Admin" role
+            modelBuilder.Entity<UserRole>().HasData(
+                new UserRole { Id = 1, UserId = adminId, RoleId = adminRoleId }
+            );
+        }
 
-        //    // Seed default user
-        //    modelBuilder.Entity<User>().HasData(
-        //        new User { Id = adminId, Email = "admin@example.com", PasswordHash = "admin123" }
-        //    );
 
-        //    // Assign admin user to "Admin" role
-        //    modelBuilder.Entity<UserRole>().HasData(
-        //        new UserRole { Id = Guid.NewGuid(), UserId = adminId, RoleId = adminRoleId }
-        //    );
-        //}
     }
 }

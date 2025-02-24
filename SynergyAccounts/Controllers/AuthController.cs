@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using SynergyAccounts.Data;
 using System.Security.Claims;
+using SynergyAccounts.DTOS.AuthDto;
 
 namespace SynergyAccounts.Controllers
 {
@@ -18,15 +19,15 @@ namespace SynergyAccounts.Controllers
         {
             return View();
         }
-
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
-
-        public async Task<IActionResult> Login(string email, string password)
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginDto dto)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Email == email && u.PasswordHash == password);
+            var user = _context.Users.FirstOrDefault(u => u.Email == dto.Email && u.PasswordHash == dto.PasswordHash);
             if (user == null)
             {
                 ViewBag.Error = "Invalid credentials";

@@ -27,17 +27,9 @@ builder.Services.AddAuthentication("CookieAuth")
 // Add Authorization
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("SuperAdminOnly", policy => policy.RequireRole("SuperAdmin"));
 });
 
-// Add Controllers with Authorization
-builder.Services.AddControllersWithViews(options =>
-{
-    var policy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-    options.Filters.Add(new AuthorizeFilter(policy));
-});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
