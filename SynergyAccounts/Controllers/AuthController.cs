@@ -150,7 +150,7 @@ namespace SynergyAccounts.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Auth");
+            return RedirectToAction("Dashboard", "Home");
         }
 
         public IActionResult AccessDenied()
