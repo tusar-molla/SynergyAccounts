@@ -85,7 +85,6 @@ namespace SynergyAccounts.Controllers
                     return View(ldto);
                 }
 
-                // Declare variables before the conditions
                 List<Claim> claims;
                 ClaimsIdentity claimsIdentity;
                 ClaimsPrincipal claimsPrincipal;
@@ -107,7 +106,6 @@ namespace SynergyAccounts.Controllers
                     }
                     else
                     {
-                        // Incorrect password for admin
                         ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                         return View(ldto);
                     }
