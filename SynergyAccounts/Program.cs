@@ -1,26 +1,30 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SynergyAccounts.Data;
+using SynergyAccounts.Services;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<HashedPassword>();
 
 // Configure DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AccountConnection")));
 
 // Configure cookie authentication
-builder.Services.AddAuthentication("CookieAuth")
-    .AddCookie("CookieAuth", config =>
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme) // Use default "Cookies" scheme
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, config =>
     {
         config.LoginPath = "/Auth/Login";
+        config.LogoutPath = "/Auth/Logout";
         config.AccessDeniedPath = "/Auth/AccessDenied";
-        config.ExpireTimeSpan = TimeSpan.FromHours(1);
+        config.ExpireTimeSpan = TimeSpan.FromMinutes(5);
         config.SlidingExpiration = true;
     });
 
