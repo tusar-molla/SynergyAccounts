@@ -1,4 +1,6 @@
-﻿namespace SynergyAccounts.Models
+﻿using System.Numerics;
+
+namespace SynergyAccounts.Models
 {
     public class User
     {
