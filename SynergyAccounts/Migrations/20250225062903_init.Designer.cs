@@ -12,7 +12,7 @@ using SynergyAccounts.Data;
 namespace SynergyAccounts.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250224065343_init")]
+    [Migration("20250225062903_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -69,11 +69,31 @@ namespace SynergyAccounts.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("LogoPath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SubscriptionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TagLine")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TinNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VatRegistrationNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WebsiteLink")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SubscriptionId");
 
                     b.ToTable("Companies");
                 });
@@ -92,7 +112,12 @@ namespace SynergyAccounts.Migrations
                     b.Property<int>("ModulesUses")
                         .HasColumnType("int");
 
+                    b.Property<int>("SubscriptionId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SubscriptionId");
 
                     b.ToTable("Modules");
                 });
@@ -121,6 +146,11 @@ namespace SynergyAccounts.Migrations
                         new
                         {
                             Id = 2,
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = 3,
                             Name = "Operator"
                         });
                 });
@@ -136,14 +166,11 @@ namespace SynergyAccounts.Migrations
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -153,29 +180,6 @@ namespace SynergyAccounts.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Subscriptions");
-                });
-
-            modelBuilder.Entity("SynergyAccounts.Models.SubscriptionModule", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ModuleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SubscriptionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ModuleId");
-
-                    b.HasIndex("SubscriptionId");
-
-                    b.ToTable("SubscriptionModules");
                 });
 
             modelBuilder.Entity("SynergyAccounts.Models.User", b =>
@@ -192,27 +196,32 @@ namespace SynergyAccounts.Migrations
                     b.Property<int?>("BranchId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ContactNumber")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
+                    b.Property<int?>("Mobile")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("SubscriptionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -220,31 +229,9 @@ namespace SynergyAccounts.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.HasIndex("SubscriptionId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "Dhanmondi",
-                            ContactNumber = 1817171283,
-                            Email = "admin@gmail.com",
-                            FullName = "Super Admin",
-                            PasswordHash = "123456",
-                            RoleId = 1,
-                            UserName = "superadmin007"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "Mohammadpur",
-                            ContactNumber = 1910126335,
-                            Email = "operator@gmail.com",
-                            FullName = "Operator",
-                            PasswordHash = "123456",
-                            RoleId = 2,
-                            UserName = "operator007"
-                        });
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("SynergyAccounts.Models.Branch", b =>
@@ -258,30 +245,33 @@ namespace SynergyAccounts.Migrations
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("SynergyAccounts.Models.Company", b =>
+                {
+                    b.HasOne("SynergyAccounts.Models.Subscription", "Subscription")
+                        .WithMany()
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subscription");
+                });
+
+            modelBuilder.Entity("SynergyAccounts.Models.Module", b =>
+                {
+                    b.HasOne("SynergyAccounts.Models.Subscription", "Subscription")
+                        .WithMany()
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subscription");
+                });
+
             modelBuilder.Entity("SynergyAccounts.Models.Subscription", b =>
                 {
                     b.HasOne("SynergyAccounts.Models.Company", null)
                         .WithMany("Subscriptions")
                         .HasForeignKey("CompanyId");
-                });
-
-            modelBuilder.Entity("SynergyAccounts.Models.SubscriptionModule", b =>
-                {
-                    b.HasOne("SynergyAccounts.Models.Module", "Module")
-                        .WithMany("SubscriptionModules")
-                        .HasForeignKey("ModuleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SynergyAccounts.Models.Subscription", "Subscription")
-                        .WithMany("SubscriptionModules")
-                        .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Module");
-
-                    b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("SynergyAccounts.Models.User", b =>
@@ -294,9 +284,17 @@ namespace SynergyAccounts.Migrations
                         .WithMany()
                         .HasForeignKey("RoleId");
 
+                    b.HasOne("SynergyAccounts.Models.Subscription", "Subscription")
+                        .WithMany()
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Branch");
 
                     b.Navigation("Role");
+
+                    b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("SynergyAccounts.Models.Branch", b =>
@@ -309,16 +307,6 @@ namespace SynergyAccounts.Migrations
                     b.Navigation("Branches");
 
                     b.Navigation("Subscriptions");
-                });
-
-            modelBuilder.Entity("SynergyAccounts.Models.Module", b =>
-                {
-                    b.Navigation("SubscriptionModules");
-                });
-
-            modelBuilder.Entity("SynergyAccounts.Models.Subscription", b =>
-                {
-                    b.Navigation("SubscriptionModules");
                 });
 #pragma warning restore 612, 618
         }
