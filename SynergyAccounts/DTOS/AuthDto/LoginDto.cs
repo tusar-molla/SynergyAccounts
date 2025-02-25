@@ -1,8 +1,13 @@
-﻿namespace SynergyAccounts.DTOS.AuthDto
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SynergyAccounts.DTOS.AuthDto
 {
     public class LoginDto
     {
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
-        public string PasswordHash { get; set; }
+        [Required]        
+        public string Password { get; set; }
     }
 }

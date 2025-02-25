@@ -6,6 +6,8 @@ using System.Security.Claims;
 using SynergyAccounts.DTOS.AuthDto;
 using SynergyAccounts.Models;
 using SynergyAccounts.Services;
+using SynergyAccounts.Interface;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace SynergyAccounts.Controllers
 {
@@ -13,18 +15,20 @@ namespace SynergyAccounts.Controllers
     {
         private AppDbContext _context;
         private HashedPassword _hashedPassword;
-        public AuthController(AppDbContext context, HashedPassword hashPassword)
+        private readonly IAuthService  _authService;
+        public AuthController(AppDbContext context, HashedPassword hashPassword, IAuthService authService)
         {
             _context = context;
             _hashedPassword = hashPassword;
+            _authService = authService;
         }
 
         public IActionResult Index()
         {
             return View();
         }
-        [HttpGet]
 
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
@@ -33,118 +37,92 @@ namespace SynergyAccounts.Controllers
         // POST Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Register(RegisterDto rdto)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // Check if the user already exists
-        //        var existingUser = _context.Users.FirstOrDefault(u => u.Email == rdto.Email);
-        //        if (existingUser != null)
-        //        {
-        //            ModelState.AddModelError(string.Empty, "Email already in use.");
-        //            return View(rdto);
-        //        }
-        //        var user = new User
-        //        {
-        //            UserName = rdto.UserName,
-        //            FullName = rdto.FullName,
-        //            Email = rdto.Email,
-        //            PasswordHash = _hashedPassword.HashPassword(rdto.PasswordHash),
-        //            ContactNumber = rdto.ContactNumber,
-        //            Address = rdto.Address,
-        //            RoleId = rdto.RoleId
-        //        };
+        public async Task<IActionResult> Register(RegisterDto registerDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                // Return to the view with validation errors
+                return View(registerDto);
+            }
 
-        //        // Add the user to the database
-        //        _context.Users.Add(user);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction("Login", "Auth");
-        //    }
+            try
+            {
+                // Register the user
+                var user = await _authService.RegisterAsync(registerDto);
 
-        //    return View(rdto);
-        //}
+                // Redirect to a success page or login page
+                TempData["SuccessMessage"] = "Registration successful! Please log in.";
+                return RedirectToAction("Login", "Auth");
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Email already exists")
+                {
+                    ModelState.AddModelError("Email", "This email is already registered");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "An error occurred during registration: " + ex.Message);
+                }
+                return View(registerDto);
+            }
+        }
 
-
+        [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            return View(new LoginDto());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Login(LoginDto ldto)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // Check if the user exists
-        //        var user = _context.Users.FirstOrDefault(u => u.Email == ldto.Email);
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(loginDto);
+            }
 
-        //        if (user == null)
-        //        {
-        //            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-        //            return View(ldto);
-        //        }
+            try
+            {
+                var user = await _authService.LoginAsync(loginDto.Email, loginDto.Password);
 
-        //        List<Claim> claims;
-        //        ClaimsIdentity claimsIdentity;
-        //        ClaimsPrincipal claimsPrincipal;
+              // Create claims for the user
 
-        //        // Handle plain text password for admin users
-        //        if (user.PasswordHash == "123456")
-        //        {
-        //            // Check if the entered password is the plain text one used for admin
-        //            if (ldto.PasswordHash == "123456")
-        //            {
-        //                // Admin login successful
-        //                claims = new List<Claim>
-        //        {
-        //            new Claim(ClaimTypes.Name, user.UserName),
-        //            new Claim("FullName", user.FullName),
-        //            new Claim("Email", user.Email),
-        //            new Claim(ClaimTypes.Role, user.Role?.Name ?? "SuperAdmin")
-        //        };
-        //            }
-        //            else
-        //            {
-        //                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-        //                return View(ldto);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            // Handle hashed password for regular users
-        //            var Passhash = _hashedPassword.HashPassword(ldto.PasswordHash);
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.FullName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, user.RoleId == 1 ? "SuperAdmin" : user.RoleId == 2 ? "Admin" : "Operator"),
+                    // Assuming RoleId 1 is SuperAdmin 2 is Admin 3 is Operator
+                    new Claim("SubscriptionId", user.SubscriptionId.ToString()) // Add SubscriptionId as a custom claim
+                };
 
-        //            if (user.PasswordHash != Passhash)
-        //            {
-        //                // Password does not match
-        //                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-        //                return View(ldto);
-        //            }
+                // Create identity and principal
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-        //            // User login successful (hashed password scenario)
-        //            claims = new List<Claim>
-        //    {
-        //        new Claim(ClaimTypes.Name, user.UserName),
-        //        new Claim("FullName", user.FullName),
-        //        new Claim("Email", user.Email),
-        //        //new Claim(ClaimTypes.Role, user.Role?.Name ?? "User")
-        //    };
-        //        }
+                // Sign in the user with cookie authentication
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    claimsPrincipal,
+                    new AuthenticationProperties
+                    {
+                        IsPersistent = true, // Keeps the cookie across browser sessions
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30), // Matches your 5-minute expiration
+                        AllowRefresh = true // Enables sliding expiration
+                    });
 
-        //        // Initialize claimsIdentity and claimsPrincipal after claims are set
-        //        claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-        //        claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
-        //        // Sign in the user
-        //        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
-
-        //        return RedirectToAction("Dashboard", "Home");
-        //    }
-
-        //    return View(ldto);
-        //}
-
+                TempData["SuccessMessage"] = $"Welcome back, {user.FullName}!";
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View(loginDto);
+            }
+        }
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
