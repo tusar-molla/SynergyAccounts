@@ -13,13 +13,9 @@ namespace SynergyAccounts.Controllers
 {
     public class AuthController : Controller
     {
-        private AppDbContext _context;
-        private HashedPassword _hashedPassword;
         private readonly IAuthService  _authService;
-        public AuthController(AppDbContext context, HashedPassword hashPassword, IAuthService authService)
+        public AuthController(IAuthService authService)
         {
-            _context = context;
-            _hashedPassword = hashPassword;
             _authService = authService;
         }
 
@@ -82,7 +78,6 @@ namespace SynergyAccounts.Controllers
             {
                 return View(loginDto);
             }
-
             try
             {
                 var user = await _authService.LoginAsync(loginDto.Email, loginDto.Password);
@@ -91,8 +86,8 @@ namespace SynergyAccounts.Controllers
 
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.FullName),
-                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Name, user.FullName!),
+                    new Claim(ClaimTypes.Email, user.Email!),
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Role, user.RoleId == 1 ? "SuperAdmin" : user.RoleId == 2 ? "Admin" : "Operator"),
                     // Assuming RoleId 1 is SuperAdmin 2 is Admin 3 is Operator
