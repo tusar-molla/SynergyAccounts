@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - client</title>
+    <title>@ViewData["Title"] - Account</title>
     <link rel="icon" href="~/assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
     <!-- Fonts and icons -->
@@ -76,6 +76,7 @@
     <script src="~/assets/js/setting-demo.js"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/toastr.min.js"></script>
     <script>
         $(document).ready(function () {
             @if (TempData["SuccessMessage"] != null)
