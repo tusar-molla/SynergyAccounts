@@ -25,13 +25,6 @@ namespace SynergyAccounts.Services
 
         public async Task<bool> CreateCompanyAsync(Company company)
         {
-            // Business Logic: Check if name already exists
-            if (await IsCompanyNameExistsAsync(company.Name!))
-            {
-                return false; // Name already exists
-            }
-
-            // Handle file upload
             if (company.LogoImage != null)
             {
                 company.LogoPath = await UploadFileAsync(company.LogoImage);
@@ -113,15 +106,3 @@ namespace SynergyAccounts.Services
         }
     }
 }
-
-        //will be use in future
-        //public async Task<bool> DeleteCompanyAsync(int id)
-        //{
-        //    var existingCompany = await GetByIdAsync(id);
-        //    if (existingCompany == null) return false;
-
-        //    await DeleteAsync(id);
-        //    return true;
-        //}
-    
-
