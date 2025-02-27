@@ -13,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<HashedPassword>();
+//builder.Services.AddScoped<IGenericService <T>, GenericService>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Configure DbContext

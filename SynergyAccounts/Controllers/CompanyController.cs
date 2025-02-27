@@ -1,28 +1,70 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SynergyAccounts.Interface;
 using SynergyAccounts.Models;
 
 namespace SynergyAccounts.Controllers
 {
     public class CompanyController : Controller
     {
-        public IActionResult Index()
+
+        private readonly ICompanyService _companyService;
+        public CompanyController(ICompanyService companyService)
         {
-            return View();
+            _companyService = companyService;
+        }
+        public async Task<IActionResult> CompanyList()
+        {
+            var companies = await _companyService.GetAllAsync();
+            return View(companies);
         }
 
-        public IActionResult CreateCompany()
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            var company = await _companyService.GetByIdAsync(id);
+            if (company == null) return NotFound();
+            return View(company);
         }
+
+        public IActionResult CreateCompany() => View();
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCompany(Company company)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(company);
+
+            bool isCreated = await _companyService.CreateCompanyAsync(company);
+            if (!isCreated)
             {
-             return RedirectToAction("Index");
+                ModelState.AddModelError("", "Company name already exists.");
+                return View(company);
             }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> EditCompany(int id)
+        {
+            var company = await _companyService.GetByIdAsync(id);
+            if (company == null) return NotFound();
             return View(company);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCompany(int id, Company company)
+        {
+            if (id != company.Id) return NotFound();
+            if (!ModelState.IsValid) return View(company);
+
+            bool isUpdated = await _companyService.UpdateCompanyAsync(company);
+            if (!isUpdated)
+            {
+                ModelState.AddModelError("", "Company name already exists.");
+                return View(company);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
