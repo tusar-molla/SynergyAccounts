@@ -13,7 +13,7 @@ namespace SynergyAccounts.Controllers
 {
     public class AuthController : Controller
     {
-        private readonly IAuthService  _authService;
+        private readonly IAuthService _authService;
         public AuthController(IAuthService authService)
         {
             _authService = authService;
@@ -37,29 +37,29 @@ namespace SynergyAccounts.Controllers
         {
             if (!ModelState.IsValid)
             {
-                // Return to the view with validation errors
                 return View(registerDto);
             }
 
             try
             {
-                // Register the user
                 var user = await _authService.RegisterAsync(registerDto);
-
-                // Redirect to a success page or login page
                 TempData["SuccessMessage"] = "Registration successful! Please log in.";
+
                 return RedirectToAction("Login", "Auth");
             }
             catch (Exception ex)
             {
-                if (ex.Message == "Email already exists")
-                {
-                    ModelState.AddModelError("Email", "This email is already registered");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "An error occurred during registration: " + ex.Message);
-                }
+                
+                TempData["ErrorMessage"] = "Registration Unsuccessful!"+ex.Message;
+
+                // if (ex.Message == "Email already exists")
+                // {
+                //     ModelState.AddModelError("Email", "This email is already registered");
+                // }
+                // else
+                // {
+                //     ModelState.AddModelError("", "An error occurred during registration: " + ex.Message);
+                // }
                 return View(registerDto);
             }
         }
@@ -82,7 +82,7 @@ namespace SynergyAccounts.Controllers
             {
                 var user = await _authService.LoginAsync(loginDto.Email, loginDto.Password);
 
-              // Create claims for the user
+                // Create claims for the user
 
                 var claims = new List<Claim>
                 {

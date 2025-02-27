@@ -37,7 +37,6 @@ namespace SynergyAccounts.Services
 
         public async Task<User> RegisterAsync(RegisterDto registerDto)
         {
-            // Check if email already exists
             if (await _context.Users.AnyAsync(u => u.Email == registerDto.Email))
             {
                 throw new Exception("Email already exists");

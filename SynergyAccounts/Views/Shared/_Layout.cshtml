@@ -1,316 +1,319 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - client</title>
-    <script type="importmap"></script>
-    <link rel="icon" href="~/assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@ViewData["Title"] - client</title>
+  <script type="importmap"></script>
+  <link rel="icon" href="~/assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
-    <!-- Fonts and icons -->
-    <script src="~/assets/js/plugin/webfont/webfont.min.js"></script>
-    <script>
-        WebFont.load({
-            google: { families: ["Public Sans:300,400,500,600,700"] },
-            custom: {
-                families: [
-                    "Font Awesome 5 Solid",
-                    "Font Awesome 5 Regular",
-                    "Font Awesome 5 Brands",
-                    "simple-line-icons",
-                ],
-                urls: ["~/assets/css/fonts.min.css"],
-            },
-            active: function () {
-                sessionStorage.fonts = true;
-            },
-        });
-    </script>
-    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/assets/css/demo.css" />
-    <link rel="stylesheet" href="~/assets/css/fonts.min.css" />
-    <link rel="stylesheet" href="~/assets/css/kaiadmin.min.css" />
-    <link rel="stylesheet" href="~/assets/css/plugins.min.css" />
+  <!-- Fonts and icons -->
+  <script src="~/assets/js/plugin/webfont/webfont.min.js"></script>
+  <script>
+    WebFont.load({
+      google: { families: ["Public Sans:300,400,500,600,700"] },
+      custom: {
+        families: [
+          "Font Awesome 5 Solid",
+          "Font Awesome 5 Regular",
+          "Font Awesome 5 Brands",
+          "simple-line-icons",
+        ],
+        urls: ["~/assets/css/fonts.min.css"],
+      },
+      active: function () {
+        sessionStorage.fonts = true;
+      },
+    });
+  </script>
+  <link rel="stylesheet" href="~/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="~/assets/css/demo.css" />
+  <link rel="stylesheet" href="~/assets/css/fonts.min.css" />
+  <link rel="stylesheet" href="~/assets/css/kaiadmin.min.css" />
+  <link rel="stylesheet" href="~/assets/css/plugins.min.css" />
+  <link href="~/css/toastr.min.css" rel="stylesheet" />
 </head>
+
 <body>
-    <div class="wrapper">
-        <!-- Sidebar -->
-        <div class="sidebar" data-background-color="offwhite">
-            <div class="sidebar-logo">
-                <!-- Logo Header -->
-                <div class="logo-header" data-background-color="dark">
-                    <a asp-controller="Home" asp-action="Index" class="logo">
-                        <img src="~/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
-                    </a>
-                    <div class="nav-toggle">
-                        <button class="btn btn-toggle toggle-sidebar">
-                            <i class="gg-menu-right"></i>
-                        </button>
-                        <button class="btn btn-toggle sidenav-toggler">
-                            <i class="gg-menu-left"></i>
-                        </button>
-                    </div>
-                    <button class="topbar-toggler more">
-                        <i class="gg-more-vertical-alt"></i>
-                    </button>
-                </div>
-                <!-- End Logo Header -->
-            </div>
-            <div class="sidebar-wrapper scrollbar scrollbar-inner">
-                <div class="sidebar-content">
-                    <ul class="nav nav-secondary">
-                        <li class="nav-item active">
-                            <a asp-controller="Home" asp-action="Dashboard">
-                                <i class="fas fa-home"></i>
-                                <p>Dashboard</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item active">
-                            <a asp-controller="Company" asp-action="CreateCompany">
-                                <i class="fas fa-building"></i>
-                                <p>Add Company</p>
-                            </a>
-                        </li>
-                    </ul>
-
-                </div>
-            </div>
+  <div class="wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar" data-background-color="offwhite">
+      <div class="sidebar-logo">
+        <!-- Logo Header -->
+        <div class="logo-header" data-background-color="dark">
+          <a asp-controller="Home" asp-action="Index" class="logo">
+            <img src="~/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+          </a>
+          <div class="nav-toggle">
+            <button class="btn btn-toggle toggle-sidebar">
+              <i class="gg-menu-right"></i>
+            </button>
+            <button class="btn btn-toggle sidenav-toggler">
+              <i class="gg-menu-left"></i>
+            </button>
+          </div>
+          <button class="topbar-toggler more">
+            <i class="gg-more-vertical-alt"></i>
+          </button>
         </div>
-        <!-- End Sidebar -->
+        <!-- End Logo Header -->
+      </div>
+      <div class="sidebar-wrapper scrollbar scrollbar-inner">
+        <div class="sidebar-content">
+          <ul class="nav nav-secondary">
+            <li class="nav-item active">
+              <a asp-controller="Home" asp-action="Dashboard">
+                <i class="fas fa-home"></i>
+                <p>Dashboard</p>
+              </a>
+            </li>
 
-        <div class="main-panel">
-            <div class="main-header">
-                <div class="main-header-logo">
-                    <!-- Logo Header -->
-                    <div class="logo-header" data-background-color="dark">
-                        <a asp-area="" asp-controller="Home" asp-action="Index" class="logo">
-                            <img src="~/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+            <li class="nav-item active">
+              <a asp-controller="Company" asp-action="CreateCompany">
+                <i class="fas fa-building"></i>
+                <p>Add Company</p>
+              </a>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    <!-- End Sidebar -->
+
+    <div class="main-panel">
+      <div class="main-header">
+        <div class="main-header-logo">
+          <!-- Logo Header -->
+          <div class="logo-header" data-background-color="dark">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="logo">
+              <img src="~/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+            </a>
+            <div class="nav-toggle">
+              <button class="btn btn-toggle toggle-sidebar">
+                <i class="gg-menu-right"></i>
+              </button>
+              <button class="btn btn-toggle sidenav-toggler">
+                <i class="gg-menu-left"></i>
+              </button>
+            </div>
+            <button class="topbar-toggler more">
+              <i class="gg-more-vertical-alt"></i>
+            </button>
+          </div>
+          <!-- End Logo Header -->
+        </div>
+        <!-- Navbar Header -->
+        <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+          <div class="container-fluid">
+            <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+              <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                  aria-expanded="false" aria-haspopup="true">
+                  <i class="fa fa-search"></i>
+                </a>
+              </li>
+              <li class="nav-item topbar-icon dropdown hidden-caret">
+                <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button"
+                  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-envelope"></i>
+                </a>
+                <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="messageDropdown">
+                  <li>
+                    <div class="dropdown-title d-flex justify-content-between align-items-center">
+                      Messages
+                      <a href="#" class="small">Mark all as read</a>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="message-notif-scroll scrollbar-outer">
+                      <div class="notif-center">
+                        <a href="#">
+                          <div class="notif-img">
+                            <i class="fa fa-user-plus"></i>
+                          </div>
+                          <div class="notif-content">
+                            <span class="subject">Rezaul Karim</span>
+                            <span class="block"> How are you ? </span>
+                            <span class="time">@DateTime.Now.Minute minutes ago</span>
+                          </div>
                         </a>
-                        <div class="nav-toggle">
-                            <button class="btn btn-toggle toggle-sidebar">
-                                <i class="gg-menu-right"></i>
-                            </button>
-                            <button class="btn btn-toggle sidenav-toggler">
-                                <i class="gg-menu-left"></i>
-                            </button>
-                        </div>
-                        <button class="topbar-toggler more">
-                            <i class="gg-more-vertical-alt"></i>
-                        </button>
+                      </div>
                     </div>
-                    <!-- End Logo Header -->
+                  </li>
+                  <li>
+                    <a class="see-all" href="javascript:void(0);">
+                      See all messages<i class="fa fa-angle-right"></i>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item topbar-icon dropdown hidden-caret">
+                <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-bell"></i>
+                  <span class="notification">1</span>
+                </a>
+                <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
+                  <li>
+                    <div class="dropdown-title">
+                      You have 1 new notification
+                    </div>
+                  </li>
+                  <li>
+                    <div class="notif-scroll scrollbar-outer">
+                      <div class="notif-center">
+                        <a href="#">
+                          <div class="notif-icon notif-primary">
+                            <i class="fa fa-user-plus"></i>
+                          </div>
+                          <div class="notif-content">
+                            <span class="block"> New user registered </span>
+                            <span class="time">@DateTime.Now.Minute minutes ago</span>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <a class="see-all" href="javascript:void(0);">
+                      See all notifications<i class="fa fa-angle-right"></i>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item topbar-icon dropdown hidden-caret">
+                <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                  <i class="fas fa-layer-group"></i>
+                </a>
+                <div class="dropdown-menu quick-actions animated fadeIn">
+                  <div class="quick-actions-header">
+                    <span class="title mb-1">Quick Actions</span>
+                    <span class="subtitle op-7">Shortcuts</span>
+                  </div>
+                  <div class="quick-actions-scroll scrollbar-outer">
+                    <div class="quick-actions-items">
+                      <div class="row m-0">
+                        <a class="col-6 col-md-4 p-0">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item bg-danger rounded-circle">
+                              <i class="far fa-calendar-alt"></i>
+                            </div>
+                            <span class="text">Calendar</span>
+                          </div>
+                        </a>
+                        <a class="col-6 col-md-4 p-0">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item bg-warning rounded-circle">
+                              <i class="fas fa-map"></i>
+                            </div>
+                            <span class="text">Maps</span>
+                          </div>
+                        </a>
+                        <a class="col-6 col-md-4 p-0">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item bg-info rounded-circle">
+                              <i class="fas fa-file-excel"></i>
+                            </div>
+                            <span class="text">Reports</span>
+                          </div>
+                        </a>
+                        <a class="col-6 col-md-4 p-0">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item bg-success rounded-circle">
+                              <i class="fas fa-envelope"></i>
+                            </div>
+                            <span class="text">Emails</span>
+                          </div>
+                        </a>
+                        <a class="col-6 col-md-4 p-0">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item bg-primary rounded-circle">
+                              <i class="fas fa-file-invoice-dollar"></i>
+                            </div>
+                            <span class="text">Invoice</span>
+                          </div>
+                        </a>
+                        <a class="col-6 col-md-4 p-0">
+                          <div class="quick-actions-item">
+                            <div class="avatar-item bg-secondary rounded-circle">
+                              <i class="fas fa-credit-card"></i>
+                            </div>
+                            <span class="text">Payments</span>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <!-- Navbar Header -->
-                <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
-                    <div class="container-fluid">
-                        <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                            <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                                   aria-expanded="false" aria-haspopup="true">
-                                    <i class="fa fa-search"></i>
-                                </a>
-                            </li>
-                            <li class="nav-item topbar-icon dropdown hidden-caret">
-                                <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button"
-                                   data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-envelope"></i>
-                                </a>
-                                <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="messageDropdown">
-                                    <li>
-                                        <div class="dropdown-title d-flex justify-content-between align-items-center">
-                                            Messages
-                                            <a href="#" class="small">Mark all as read</a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="message-notif-scroll scrollbar-outer">
-                                            <div class="notif-center">
-                                                <a href="#">
-                                                    <div class="notif-img">
-                                                        <i class="fa fa-user-plus"></i>
-                                                    </div>
-                                                    <div class="notif-content">
-                                                        <span class="subject">Rezaul Karim</span>
-                                                        <span class="block"> How are you ? </span>
-                                                        <span class="time">@DateTime.Now.Minute minutes ago</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a class="see-all" href="javascript:void(0);">
-                                            See all messages<i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item topbar-icon dropdown hidden-caret">
-                                <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown"
-                                   aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-bell"></i>
-                                    <span class="notification">1</span>
-                                </a>
-                                <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
-                                    <li>
-                                        <div class="dropdown-title">
-                                            You have 1 new notification
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="notif-scroll scrollbar-outer">
-                                            <div class="notif-center">
-                                                <a href="#">
-                                                    <div class="notif-icon notif-primary">
-                                                        <i class="fa fa-user-plus"></i>
-                                                    </div>
-                                                    <div class="notif-content">
-                                                        <span class="block"> New user registered </span>
-                                                        <span class="time">@DateTime.Now.Minute minutes ago</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a class="see-all" href="javascript:void(0);">
-                                            See all notifications<i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item topbar-icon dropdown hidden-caret">
-                                <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-expanded="false">
-                                    <i class="fas fa-layer-group"></i>
-                                </a>
-                                <div class="dropdown-menu quick-actions animated fadeIn">
-                                    <div class="quick-actions-header">
-                                        <span class="title mb-1">Quick Actions</span>
-                                        <span class="subtitle op-7">Shortcuts</span>
-                                    </div>
-                                    <div class="quick-actions-scroll scrollbar-outer">
-                                        <div class="quick-actions-items">
-                                            <div class="row m-0">
-                                                <a class="col-6 col-md-4 p-0">
-                                                    <div class="quick-actions-item">
-                                                        <div class="avatar-item bg-danger rounded-circle">
-                                                            <i class="far fa-calendar-alt"></i>
-                                                        </div>
-                                                        <span class="text">Calendar</span>
-                                                    </div>
-                                                </a>
-                                                <a class="col-6 col-md-4 p-0">
-                                                    <div class="quick-actions-item">
-                                                        <div class="avatar-item bg-warning rounded-circle">
-                                                            <i class="fas fa-map"></i>
-                                                        </div>
-                                                        <span class="text">Maps</span>
-                                                    </div>
-                                                </a>
-                                                <a class="col-6 col-md-4 p-0">
-                                                    <div class="quick-actions-item">
-                                                        <div class="avatar-item bg-info rounded-circle">
-                                                            <i class="fas fa-file-excel"></i>
-                                                        </div>
-                                                        <span class="text">Reports</span>
-                                                    </div>
-                                                </a>
-                                                <a class="col-6 col-md-4 p-0">
-                                                    <div class="quick-actions-item">
-                                                        <div class="avatar-item bg-success rounded-circle">
-                                                            <i class="fas fa-envelope"></i>
-                                                        </div>
-                                                        <span class="text">Emails</span>
-                                                    </div>
-                                                </a>
-                                                <a class="col-6 col-md-4 p-0">
-                                                    <div class="quick-actions-item">
-                                                        <div class="avatar-item bg-primary rounded-circle">
-                                                            <i class="fas fa-file-invoice-dollar"></i>
-                                                        </div>
-                                                        <span class="text">Invoice</span>
-                                                    </div>
-                                                </a>
-                                                <a class="col-6 col-md-4 p-0">
-                                                    <div class="quick-actions-item">
-                                                        <div class="avatar-item bg-secondary rounded-circle">
-                                                            <i class="fas fa-credit-card"></i>
-                                                        </div>
-                                                        <span class="text">Payments</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="nav-item topbar-user dropdown hidden-caret">
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
-                                        <div class="avatar-sm">
-                                            <i class="fa fa-user-circle fa-3x"></i>
-                                        </div>
-                                        <span class="profile-username">
-                                            <span class="op-7">Hi,</span>
-                                            <span class="fw-bold">
-                                                @User.Identity.Name
-                                            </span>
-                                        </span>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-user animated fadeIn">
-                                        <div class="dropdown-user-scroll scrollbar-outer">
-                                        <li>
-                                            <div class="user-box">
-                                                <div class="avatar-lg">
-                                                    <i class="fa fa-user-circle fa-3x"></i>
-                                                </div>
-                                                <div class="u-text">
-                                                    <h4>@User.Identity.Name</h4>
-                                                    <p class="text-muted">@User.FindFirst("Email")?.Value</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">My Profile</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Account Setting</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" asp-controller="Auth" asp-action="Logout">Logout</a>
-                                        </li>
+              </li>
+              <li class="nav-item topbar-user dropdown hidden-caret">
+                @if (User.Identity.IsAuthenticated)
+                {
+                  <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                    <div class="avatar-sm">
+                      <i class="fa fa-user-circle fa-3x"></i>
+                    </div>
+                    <span class="profile-username">
+                      <span class="op-7">Hi,</span>
+                      <span class="fw-bold">
+                        @User.Identity.Name
+                      </span>
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-user animated fadeIn">
+                    <div class="dropdown-user-scroll scrollbar-outer">
+                      <li>
+                        <div class="user-box">
+                          <div class="avatar-lg">
+                            <i class="fa fa-user-circle fa-3x"></i>
+                          </div>
+                          <div class="u-text">
+                            <h4>@User.Identity.Name</h4>
+                            <p class="text-muted">@User.FindFirst("Email")?.Value</p>
+                          </div>
                         </div>
-                        </ul>
-                                }
-                                else
-                                {
-                        <a class="nav-link" href="@Url.Action("Login", "Auth")">Sign In</a>
-                                }
-                    </li>
+                      </li>
+                      <li>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">My Profile</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Account Setting</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-controller="Auth" asp-action="Logout">Logout</a>
+                      </li>
+                    </div>
+                  </ul>
+                }
+                else
+                {
+                  <a class="nav-link" href="@Url.Action("Login", "Auth")">Sign In</a>
+                }
+              </li>
 
-                    </ul>
-            </div>
-            </nav>
-            <!-- End Navbar -->
+            </ul>
+          </div>
+        </nav>
+        <!-- End Navbar -->
+      </div>
+
+      <div class="container">
+        <div class="page-inner">
+          @RenderBody()
         </div>
+      </div>
 
-        <div class="container">
-            <div class="page-inner">
-                    @RenderBody()
-            </div>
+      <footer class="footer">
+        <div class="container-fluid d-flex justify-content-between">
+          <div class="copyright">
+            @DateTime.Now.Year <a href="https://supermanshuvo.wordpress.com/">R.K.</a>
+          </div>
+          <div>
+            Customized by R.K.
+          </div>
         </div>
-
-        <footer class="footer">
-            <div class="container-fluid d-flex justify-content-between">
-                <div class="copyright">
-                        @DateTime.Now.Year <a href="https://supermanshuvo.wordpress.com/">R.K.</a>
-                </div>
-                <div>
-                    Customized by R.K.
-                </div>
-            </div>
-        </footer>
+      </footer>
     </div>
 
 
@@ -341,241 +344,258 @@
 
     <script src="~/assets/js/setting-demo.js"></script>
     <script>
-        //== Class definition
-        var SweetAlert2Demo = (function () {
-          //== Demos
-          var initDemos = function () {
-            //== Sweetalert Demo 1
-            $("#alert_demo_1").click(function (e) {
-              swal("Good job!", {
-                buttons: {
-                  confirm: {
-                    className: "btn btn-success",
-                  },
-                },
-              });
-            });
+      $(document).ready(function () {
+        @if (TempData["SuccessMessage"] != null)
+          {
+            <text>
+              toastr.success("@TempData["SuccessMessage"]");
+            </text>
+        }
 
-            //== Sweetalert Demo 2
-            $("#alert_demo_2").click(function (e) {
-              swal("Here's the title!", "...and here's the text!", {
-                buttons: {
-                  confirm: {
-                    className: "btn btn-success",
-                  },
-                },
-              });
-            });
+          @if (TempData["ErrorMessage"] != null)
+          {
+            <text>
+              toastr.error("@TempData["ErrorMessage"]");
+            </text>
+        }
+        });
 
-            //== Sweetalert Demo 3
-            $("#alert_demo_3_1").click(function (e) {
-              swal("Good job!", "You clicked the button!", {
-                icon: "warning",
-                buttons: {
-                  confirm: {
-                    className: "btn btn-warning",
-                  },
+      //== Class definition
+      var SweetAlert2Demo = (function () {
+        //== Demos
+        var initDemos = function () {
+          //== Sweetalert Demo 1
+          $("#alert_demo_1").click(function (e) {
+            swal("Good job!", {
+              buttons: {
+                confirm: {
+                  className: "btn btn-success",
                 },
-              });
+              },
             });
+          });
 
-            $("#alert_demo_3_2").click(function (e) {
-              swal("Good job!", "You clicked the button!", {
-                icon: "error",
-                buttons: {
-                  confirm: {
-                    className: "btn btn-danger",
-                  },
+          //== Sweetalert Demo 2
+          $("#alert_demo_2").click(function (e) {
+            swal("Here's the title!", "...and here's the text!", {
+              buttons: {
+                confirm: {
+                  className: "btn btn-success",
                 },
-              });
+              },
             });
+          });
 
-            $("#alert_demo_3_3").click(function (e) {
-              swal("Good job!", "You clicked the button!", {
-                icon: "success",
-                buttons: {
-                  confirm: {
-                    className: "btn btn-success",
-                  },
+          //== Sweetalert Demo 3
+          $("#alert_demo_3_1").click(function (e) {
+            swal("Good job!", "You clicked the button!", {
+              icon: "warning",
+              buttons: {
+                confirm: {
+                  className: "btn btn-warning",
                 },
-              });
+              },
             });
+          });
 
-            $("#alert_demo_3_4").click(function (e) {
-              swal("Good job!", "You clicked the button!", {
-                icon: "info",
-                buttons: {
-                  confirm: {
-                    className: "btn btn-info",
-                  },
+          $("#alert_demo_3_2").click(function (e) {
+            swal("Good job!", "You clicked the button!", {
+              icon: "error",
+              buttons: {
+                confirm: {
+                  className: "btn btn-danger",
                 },
-              });
+              },
             });
+          });
 
-            //== Sweetalert Demo 4
-            $("#alert_demo_4").click(function (e) {
-              swal({
-                title: "Good job!",
-                text: "You clicked the button!",
-                icon: "success",
-                buttons: {
-                  confirm: {
-                    text: "Confirm Me",
-                    value: true,
-                    visible: true,
-                    className: "btn btn-success",
-                    closeModal: true,
-                  },
+          $("#alert_demo_3_3").click(function (e) {
+            swal("Good job!", "You clicked the button!", {
+              icon: "success",
+              buttons: {
+                confirm: {
+                  className: "btn btn-success",
                 },
-              });
+              },
             });
+          });
 
-            $("#alert_demo_5").click(function (e) {
-              swal({
-                title: "Input Something",
-                html: '<br><input class="form-control" placeholder="Input Something" id="input-field">',
-                content: {
-                  element: "input",
-                  attributes: {
-                    placeholder: "Input Something",
-                    type: "text",
-                    id: "input-field",
-                    className: "form-control",
-                  },
+          $("#alert_demo_3_4").click(function (e) {
+            swal("Good job!", "You clicked the button!", {
+              icon: "info",
+              buttons: {
+                confirm: {
+                  className: "btn btn-info",
                 },
-                buttons: {
-                  cancel: {
-                    visible: true,
-                    className: "btn btn-danger",
-                  },
-                  confirm: {
-                    className: "btn btn-success",
-                  },
-                },
-              }).then(function () {
-                swal("", "You entered : " + $("#input-field").val(), "success");
-              });
+              },
             });
+          });
 
-            $("#alert_demo_6").click(function (e) {
-              swal("This modal will disappear soon!", {
-                buttons: false,
-                timer: 3000,
-              });
-            });
-
-            $("#alert_demo_7").click(function (e) {
-              swal({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                type: "warning",
-                buttons: {
-                  confirm: {
-                    text: "Yes, delete it!",
-                    className: "btn btn-success",
-                  },
-                  cancel: {
-                    visible: true,
-                    className: "btn btn-danger",
-                  },
+          //== Sweetalert Demo 4
+          $("#alert_demo_4").click(function (e) {
+            swal({
+              title: "Good job!",
+              text: "You clicked the button!",
+              icon: "success",
+              buttons: {
+                confirm: {
+                  text: "Confirm Me",
+                  value: true,
+                  visible: true,
+                  className: "btn btn-success",
+                  closeModal: true,
                 },
-              }).then((Delete) => {
-                if (Delete) {
-                  swal({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
-                    type: "success",
-                    buttons: {
-                      confirm: {
-                        className: "btn btn-success",
-                      },
+              },
+            });
+          });
+
+          $("#alert_demo_5").click(function (e) {
+            swal({
+              title: "Input Something",
+              html: '<br><input class="form-control" placeholder="Input Something" id="input-field">',
+              content: {
+                element: "input",
+                attributes: {
+                  placeholder: "Input Something",
+                  type: "text",
+                  id: "input-field",
+                  className: "form-control",
+                },
+              },
+              buttons: {
+                cancel: {
+                  visible: true,
+                  className: "btn btn-danger",
+                },
+                confirm: {
+                  className: "btn btn-success",
+                },
+              },
+            }).then(function () {
+              swal("", "You entered : " + $("#input-field").val(), "success");
+            });
+          });
+
+          $("#alert_demo_6").click(function (e) {
+            swal("This modal will disappear soon!", {
+              buttons: false,
+              timer: 3000,
+            });
+          });
+
+          $("#alert_demo_7").click(function (e) {
+            swal({
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              type: "warning",
+              buttons: {
+                confirm: {
+                  text: "Yes, delete it!",
+                  className: "btn btn-success",
+                },
+                cancel: {
+                  visible: true,
+                  className: "btn btn-danger",
+                },
+              },
+            }).then((Delete) => {
+              if (Delete) {
+                swal({
+                  title: "Deleted!",
+                  text: "Your file has been deleted.",
+                  type: "success",
+                  buttons: {
+                    confirm: {
+                      className: "btn btn-success",
                     },
-                  });
-                } else {
-                  swal.close();
-                }
-              });
+                  },
+                });
+              } else {
+                swal.close();
+              }
             });
+          });
 
-            $("#alert_demo_8").click(function (e) {
-              swal({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                type: "warning",
-                buttons: {
-                  cancel: {
-                    visible: true,
-                    text: "No, cancel!",
-                    className: "btn btn-danger",
-                  },
-                  confirm: {
-                    text: "Yes, delete it!",
-                    className: "btn btn-success",
-                  },
+          $("#alert_demo_8").click(function (e) {
+            swal({
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              type: "warning",
+              buttons: {
+                cancel: {
+                  visible: true,
+                  text: "No, cancel!",
+                  className: "btn btn-danger",
                 },
-              }).then((willDelete) => {
-                if (willDelete) {
-                  swal("Poof! Your imaginary file has been deleted!", {
-                    icon: "success",
-                    buttons: {
-                      confirm: {
-                        className: "btn btn-success",
-                      },
+                confirm: {
+                  text: "Yes, delete it!",
+                  className: "btn btn-success",
+                },
+              },
+            }).then((willDelete) => {
+              if (willDelete) {
+                swal("Poof! Your imaginary file has been deleted!", {
+                  icon: "success",
+                  buttons: {
+                    confirm: {
+                      className: "btn btn-success",
                     },
-                  });
-                } else {
-                  swal("Your imaginary file is safe!", {
-                    buttons: {
-                      confirm: {
-                        className: "btn btn-success",
-                      },
+                  },
+                });
+              } else {
+                swal("Your imaginary file is safe!", {
+                  buttons: {
+                    confirm: {
+                      className: "btn btn-success",
                     },
-                  });
-                }
-              });
+                  },
+                });
+              }
             });
-          };
+          });
+        };
 
-          return {
-            //== Init
-            init: function () {
-              initDemos();
-            },
-          };
-        })();
+        return {
+          //== Init
+          init: function () {
+            initDemos();
+          },
+        };
+      })();
 
-        //== Class Initialization
-        jQuery(document).ready(function () {
-          SweetAlert2Demo.init();
-        });
+      //== Class Initialization
+      jQuery(document).ready(function () {
+        SweetAlert2Demo.init();
+      });
 
-        $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
-            type: "line",
-            height: "70",
-            width: "100%",
-            lineWidth: "2",
-            lineColor: "#177dff",
-            fillColor: "rgba(23, 125, 255, 0.14)",
-        });
+      $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
+        type: "line",
+        height: "70",
+        width: "100%",
+        lineWidth: "2",
+        lineColor: "#177dff",
+        fillColor: "rgba(23, 125, 255, 0.14)",
+      });
 
-        $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
-            type: "line",
-            height: "70",
-            width: "100%",
-            lineWidth: "2",
-            lineColor: "#f3545d",
-            fillColor: "rgba(243, 84, 93, .14)",
-        });
+      $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
+        type: "line",
+        height: "70",
+        width: "100%",
+        lineWidth: "2",
+        lineColor: "#f3545d",
+        fillColor: "rgba(243, 84, 93, .14)",
+      });
 
-        $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
-            type: "line",
-            height: "70",
-            width: "100%",
-            lineWidth: "2",
-            lineColor: "#ffa534",
-            fillColor: "rgba(255, 165, 52, .14)",
-        });
+      $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
+        type: "line",
+        height: "70",
+        width: "100%",
+        lineWidth: "2",
+        lineColor: "#ffa534",
+        fillColor: "rgba(255, 165, 52, .14)",
+      });
     </script>
-        @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
