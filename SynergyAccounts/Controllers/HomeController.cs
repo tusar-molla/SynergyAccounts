@@ -5,6 +5,7 @@ using SynergyAccounts.Models;
 
 namespace SynergyAccounts.Controllers;
 
+[Authorize]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;

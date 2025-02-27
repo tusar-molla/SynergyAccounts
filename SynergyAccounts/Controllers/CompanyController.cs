@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SynergyAccounts.Interface;
 using SynergyAccounts.Models;
 
 namespace SynergyAccounts.Controllers
 {
+    [Authorize]
     public class CompanyController : Controller
     {
 
