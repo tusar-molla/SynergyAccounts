@@ -23,5 +23,5 @@ public class Company
     public int SubscriptionId { get; set; }
     public Subscription? Subscription { get; set; }
     public ICollection<Branch> Branches { get; set; } = new List<Branch>();
-    public ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
+    
 }
