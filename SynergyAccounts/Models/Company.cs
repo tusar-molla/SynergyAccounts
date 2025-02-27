@@ -16,6 +16,7 @@ public class Company
     public string? ContactNumber { get; set; }
     [Required]
     public string? Address { get; set; }
+    public string? Remarks { get; set; }
     public string? LogoPath { get; set; }
     [NotMapped]
     public IFormFile? LogoImage { get; set; }

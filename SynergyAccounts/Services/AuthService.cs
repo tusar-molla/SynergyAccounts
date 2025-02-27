@@ -65,25 +65,14 @@ namespace SynergyAccounts.Services
         }
         private async Task<int> GetDefaultSubscriptionId()
         {
-            // Try to find an existing active subscription
-            var subscription = await _context.Subscriptions
-                .FirstOrDefaultAsync(s => s.IsActive);
 
-            // If no active subscription exists, create a new one
-            if (subscription == null)
-            {
-                subscription = new Subscription
+             var subscription = new Subscription
                 {
-                    StartDate = DateTime.Now,
-                    IsActive = true
-                    // EndDate can remain null as it's nullable in the model
+                    IsActive = true                  
                 };
-
-                // Add the new subscription to the context
                 _context.Subscriptions.Add(subscription);
                 await _context.SaveChangesAsync(); // This persists the new subscription and assigns an ID
-            }
-
+            
             return subscription.Id;
         }
     }

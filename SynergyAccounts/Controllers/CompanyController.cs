@@ -12,7 +12,7 @@ namespace SynergyAccounts.Controllers
         {
             _companyService = companyService;
         }
-        public async Task<IActionResult> CompanyList()
+        public async Task<IActionResult> Index()
         {
             var companies = await _companyService.GetAllAsync();
             return View(companies);
@@ -31,16 +31,19 @@ namespace SynergyAccounts.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCompany(Company company)
         {
-            if (!ModelState.IsValid) return View(company);
-
-            bool isCreated = await _companyService.CreateCompanyAsync(company);
-            if (!isCreated)
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Company name already exists.");
-                return View(company);
-            }
+                bool isCreated = await _companyService.CreateCompanyAsync(company);
 
-            return RedirectToAction(nameof(Index));
+                if (!isCreated)
+                {
+                    ModelState.AddModelError("Name", "Company name already exists.");
+                    return View(company);
+                }
+
+                return RedirectToAction("Index");
+            }
+            return View(company);
         }
 
         public async Task<IActionResult> EditCompany(int id)
@@ -52,19 +55,21 @@ namespace SynergyAccounts.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCompany(int id, Company company)
+        public async Task<IActionResult> EditCompany(Company company)
         {
-            if (id != company.Id) return NotFound();
-            if (!ModelState.IsValid) return View(company);
-
-            bool isUpdated = await _companyService.UpdateCompanyAsync(company);
-            if (!isUpdated)
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Company name already exists.");
-                return View(company);
-            }
+                bool isUpdated = await _companyService.UpdateCompanyAsync(company);
 
-            return RedirectToAction(nameof(Index));
+                if (!isUpdated)
+                {
+                    ModelState.AddModelError("Name", "Company name already exists or update failed.");
+                    return View(company);
+                }
+
+                return RedirectToAction("Index");
+            }
+            return View(company);
         }
     }
 }
