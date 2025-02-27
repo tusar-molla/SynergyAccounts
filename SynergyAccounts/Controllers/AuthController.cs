@@ -44,22 +44,12 @@ namespace SynergyAccounts.Controllers
             {
                 var user = await _authService.RegisterAsync(registerDto);
                 TempData["SuccessMessage"] = "Registration successful! Please log in.";
-
                 return RedirectToAction("Login", "Auth");
             }
             catch (Exception ex)
             {
                 
                 TempData["ErrorMessage"] = "Registration Unsuccessful!"+ex.Message;
-
-                // if (ex.Message == "Email already exists")
-                // {
-                //     ModelState.AddModelError("Email", "This email is already registered");
-                // }
-                // else
-                // {
-                //     ModelState.AddModelError("", "An error occurred during registration: " + ex.Message);
-                // }
                 return View(registerDto);
             }
         }
@@ -114,7 +104,7 @@ namespace SynergyAccounts.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
+                TempData["ErrorMessage"] = "Login Unsuccessful!"+ex.Message;
                 return View(loginDto);
             }
         }
