@@ -16,7 +16,7 @@ namespace SynergyAccounts.Controllers
         }
         public async Task<IActionResult> Company()
         {
-            var company = await _companyService.GetFirstCompanyAsync();
+            var company = await _companyService.GetCompanyBySubscriptionId();
             if (company == null)
             {
                 return View(new Company());

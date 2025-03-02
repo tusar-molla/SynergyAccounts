@@ -155,7 +155,7 @@ namespace SynergyAccounts.Services
             return $"/images/{uniqueFileName}";
         }
 
-        public async Task<Company?> GetFirstCompanyAsync()
+        public async Task<Company?> GetCompanyBySubscriptionId()
         {
             var subscriptionId = _httpContextAccessor.HttpContext?.User.FindFirst("SubscriptionId")!.Value;
             return await _context.Companies.FirstOrDefaultAsync(c => c.Id == int.Parse(subscriptionId!));
