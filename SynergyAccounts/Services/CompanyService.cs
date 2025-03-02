@@ -157,7 +157,8 @@ namespace SynergyAccounts.Services
 
         public async Task<Company?> GetFirstCompanyAsync()
         {
-            return await _context.Companies.OrderBy(c => c.Id).FirstOrDefaultAsync();
+            var subscriptionId = _httpContextAccessor.HttpContext?.User.FindFirst("SubscriptionId")!.Value;
+            return await _context.Companies.FirstOrDefaultAsync(c => c.Id == int.Parse(subscriptionId!));
         }
 
     }

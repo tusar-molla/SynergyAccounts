@@ -12,9 +12,9 @@ namespace SynergyAccounts.Controllers
         private readonly ICompanyService _companyService;
         public CompanyController(ICompanyService companyService)
         {
-            _companyService = companyService ?? throw new ArgumentNullException(nameof(companyService));
+            _companyService = companyService;
         }
-        public async Task<IActionResult> CompanyAddUpdate()
+        public async Task<IActionResult> Company()
         {
             var company = await _companyService.GetFirstCompanyAsync();
             if (company == null)
@@ -26,7 +26,7 @@ namespace SynergyAccounts.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CompanyAddUpdate(Company company)
+        public async Task<IActionResult> Company(Company company)
         {
             if (!ModelState.IsValid)
             {
@@ -59,35 +59,6 @@ namespace SynergyAccounts.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "An error occurred: " + ex.Message);
-                return View(company);
-            }
-        }
-
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCompany(Company company)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(company);
-            }
-
-            try
-            {
-                bool isUpdated = await _companyService.UpdateCompanyAsync(company);
-                if (!isUpdated)
-                {
-                    ModelState.AddModelError("Name", "Company name already exists or update failed.");
-                    return View(company);
-                }
-                return View(company);
-            }
-            catch (Exception ex)
-            {
-                // Log exception here in production
-                ModelState.AddModelError(string.Empty, "An error occurred while updating the company."+ex.Message);
                 return View(company);
             }
         }
