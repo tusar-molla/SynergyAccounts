@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SynergyAccounts.Interface;
 using SynergyAccounts.Models;
 
@@ -9,49 +10,23 @@ namespace SynergyAccounts.Controllers
     public class CompanyController : Controller
     {
         private readonly ICompanyService _companyService;
-
         public CompanyController(ICompanyService companyService)
         {
             _companyService = companyService ?? throw new ArgumentNullException(nameof(companyService));
         }
-
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> CompanyAddUpdate()
         {
-            try
+            var company = await _companyService.GetFirstCompanyAsync();
+            if (company == null)
             {
-                var companies = await _companyService.GetAllAsync();
-                return View(companies);
+                return View(new Company());
             }
-            catch (Exception ex)
-            {
-                // Log exception here in production
-                return StatusCode(500, "An error occurred while retrieving companies."+ex.Message);
-            }
+            return View(company);
         }
-
-        public async Task<IActionResult> Details(int id)
-        {
-            try
-            {
-                var company = await _companyService.GetByIdAsync(id);
-                return View(company);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                // Log exception here in production
-                return StatusCode(500, "An error occurred while retrieving company details."+ex.Message);
-            }
-        }
-
-        public IActionResult CreateCompany() => View();
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCompany(Company company)
+        public async Task<IActionResult> CompanyAddUpdate(Company company)
         {
             if (!ModelState.IsValid)
             {
@@ -60,39 +35,35 @@ namespace SynergyAccounts.Controllers
 
             try
             {
-                bool isCreated = await _companyService.CreateCompanyAsync(company);
-                if (!isCreated)
-                {
-                    ModelState.AddModelError("Name", "Company name already exists.");
-                    return View(company);
+                if (company.Id == 0)
+                {                    
+                    bool isCreated = await _companyService.CreateCompanyAsync(company);
+                    if (!isCreated)
+                    {
+                        ModelState.AddModelError("Name", "A company already exists for this SubscriptionId.");
+                        return View(company);
+                    }
                 }
-                return RedirectToAction("Index");
+                else
+                {
+                    bool isUpdated = await _companyService.UpdateCompanyAsync(company);
+                    if (!isUpdated)
+                    {
+                        ModelState.AddModelError("Name", "Company name already exists or update failed.");
+                        return View(company);
+                    }
+                }
+
+                return RedirectToAction("Company");
             }
             catch (Exception ex)
             {
-                // Log exception here in production
-                ModelState.AddModelError(string.Empty, "An error occurred while creating the company."+ex.Message);
+                ModelState.AddModelError(string.Empty, "An error occurred: " + ex.Message);
                 return View(company);
             }
         }
 
-        public async Task<IActionResult> EditCompany(int id)
-        {
-            try
-            {
-                var company = await _companyService.GetByIdAsync(id);
-                return View(company);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                // Log exception here in production
-                return StatusCode(500, "An error occurred while retrieving company details."+ex.Message);
-            }
-        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -111,7 +82,7 @@ namespace SynergyAccounts.Controllers
                     ModelState.AddModelError("Name", "Company name already exists or update failed.");
                     return View(company);
                 }
-                return RedirectToAction("Index");
+                return View(company);
             }
             catch (Exception ex)
             {

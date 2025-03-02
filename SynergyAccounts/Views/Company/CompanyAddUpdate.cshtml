@@ -1,15 +1,13 @@
 ﻿@model SynergyAccounts.Models.Company
 
-<div class="container">
-    <div class="page-inner">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">Edit Company</div>
+                        <div class="card-title">Add Company</div>
                     </div>
                     <div class="card-body">
-                        <form asp-action="Company" method="post" enctype="multipart/form-data" class="container">
+                        <form asp-action="Company" method="post" enctype="multipart/form-data">
                             <input type="hidden" asp-for="Id" />
 
                             <div class="row">
@@ -67,9 +65,9 @@
 
                                         @if (!string.IsNullOrEmpty(Model.LogoPath))
                                         {
-                                                <div class="mt-2">
-                                                    <img src="@Model.LogoPath" alt="Current Logo" width="100" />
-                                                </div>
+                                            <div class="mt-2">
+                                                <img src="@Model.LogoPath" alt="Current Logo" width="100" />
+                                            </div>
                                         }
                                     </div>
                                 </div>
@@ -85,9 +83,7 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
 @section Scripts {
-        <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
 }

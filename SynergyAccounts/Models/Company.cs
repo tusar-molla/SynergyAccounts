@@ -12,9 +12,7 @@ public class Company
     public string? TinNo { get; set; }
     public string? WebsiteLink { get; set; }
     public string? Email { get; set; }
-    [Required]
     public string? ContactNumber { get; set; }
-    [Required]
     public string? Address { get; set; }
     public string? Remarks { get; set; }
     public string? LogoPath { get; set; }

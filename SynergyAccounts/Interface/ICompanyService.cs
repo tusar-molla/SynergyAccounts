@@ -8,6 +8,7 @@ namespace SynergyAccounts.Interface
         Task<Company> GetByIdAsync(int id);
         Task<bool> CreateCompanyAsync(Company company);
         Task<bool> UpdateCompanyAsync(Company company);
-        Task<bool> IsCompanyNameExistsAsync(string name); 
+        Task<bool> IsCompanyNameExistsAsync(string name);
+        Task<Company?> GetFirstCompanyAsync();
     }
 }

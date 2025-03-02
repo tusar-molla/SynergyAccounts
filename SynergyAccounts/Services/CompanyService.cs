@@ -46,65 +46,80 @@ namespace SynergyAccounts.Services
 
         public async Task<bool> CreateCompanyAsync(Company company)
         {
-            if (company == null)
-                throw new ArgumentNullException(nameof(company));
-
-            if (await IsCompanyNameExistsAsync(company.Name!))
-                return false;
-
-            if (company.LogoImage != null)
+            try
             {
-                company.LogoPath = await UploadFileAsync(company.LogoImage);
-            }
+                if (company == null)
+                    throw new ArgumentNullException(nameof(company));
 
-            var subscriptionIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst("SubscriptionId")?.Value;
-            if (subscriptionIdClaim != null)
+                var subscriptionIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst("SubscriptionId")?.Value;
+                if (subscriptionIdClaim != null)
+                {
+                    var subscriptionId = int.Parse(subscriptionIdClaim);
+                    var existingCompany = await _context.Companies
+                        .FirstOrDefaultAsync(c => c.SubscriptionId == subscriptionId);
+
+                    if (existingCompany != null)
+                    {
+                        return false;
+                    }
+                    company.SubscriptionId = subscriptionId;
+                }
+
+                if (company.LogoImage != null)
+                {
+                    company.LogoPath = await UploadFileAsync(company.LogoImage);
+                }
+                await _context.AddAsync(company);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
             {
-                company.SubscriptionId = int.Parse(subscriptionIdClaim);
+                throw ex;
             }
-
-            await _context.AddAsync(company);
-            await _context.SaveChangesAsync();
-            return true;
         }
+
 
         public async Task<bool> UpdateCompanyAsync(Company company)
         {
-            if (company == null)
-                throw new ArgumentNullException(nameof(company));
-
-            var existingCompany = await _context.Companies.FirstOrDefaultAsync(c => c.Id == company.Id);
-            if (existingCompany == null)
-                return false;
-
-            if (await _context.Companies.AnyAsync(c => c.Name == company.Name && c.Id != company.Id))
+            try
             {
-                return false;
-            }
+                if (company == null)
+                    throw new ArgumentNullException(nameof(company));
 
-            if (company.LogoImage != null)
-            {
-                if (!string.IsNullOrEmpty(existingCompany.LogoPath))
+                var existingCompany = await _context.Companies.FirstOrDefaultAsync(c => c.Id == company.Id);
+                if (existingCompany == null)
                 {
-                    DeleteFile(existingCompany.LogoPath);
+                    return false;
                 }
-                existingCompany.LogoPath = await UploadFileAsync(company.LogoImage);
+                if (company.LogoImage != null)
+                {
+                    if (!string.IsNullOrEmpty(existingCompany.LogoPath))
+                    {
+                        DeleteFile(existingCompany.LogoPath);
+                    }
+                    existingCompany.LogoPath = await UploadFileAsync(company.LogoImage);
+                }
+
+                existingCompany.Name = company.Name;
+                existingCompany.TagLine = company.TagLine;
+                existingCompany.VatRegistrationNo = company.VatRegistrationNo;
+                existingCompany.TinNo = company.TinNo;
+                existingCompany.WebsiteLink = company.WebsiteLink;
+                existingCompany.Email = company.Email;
+                existingCompany.ContactNumber = company.ContactNumber;
+                existingCompany.Address = company.Address;
+                existingCompany.Remarks = company.Remarks;
+                _context.Update(existingCompany);
+                await _context.SaveChangesAsync();
+                return true;
             }
-
-            existingCompany.Name = company.Name;
-            existingCompany.TagLine = company.TagLine;
-            existingCompany.VatRegistrationNo = company.VatRegistrationNo;
-            existingCompany.TinNo = company.TinNo;
-            existingCompany.WebsiteLink = company.WebsiteLink;
-            existingCompany.Email = company.Email;
-            existingCompany.ContactNumber = company.ContactNumber;
-            existingCompany.Address = company.Address;
-            existingCompany.Remarks = company.Remarks;
-
-            _context.Update(existingCompany);
-            await _context.SaveChangesAsync();
-            return true;
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
+
 
         private void DeleteFile(string filePath)
         {
@@ -139,5 +154,11 @@ namespace SynergyAccounts.Services
 
             return $"/images/{uniqueFileName}";
         }
+
+        public async Task<Company?> GetFirstCompanyAsync()
+        {
+            return await _context.Companies.OrderBy(c => c.Id).FirstOrDefaultAsync();
+        }
+
     }
 }
