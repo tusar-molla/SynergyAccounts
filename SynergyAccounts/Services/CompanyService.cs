@@ -25,6 +25,17 @@ namespace SynergyAccounts.Services
             return await _context.Companies.AnyAsync(c => c.Name == name);
         }
 
+        public async Task<Company> GetByIdAsync(int Id)
+        {
+            var company = await _context.Companies.FindAsync(Id);
+            if (company == null)
+            {
+                throw new KeyNotFoundException($"Company with Id {Id} not found.");
+            }
+            return company;
+        }
+
+
         public async Task<bool> CreateCompanyAsync(Company company)
         {
             if (company.LogoImage != null)
@@ -32,7 +43,8 @@ namespace SynergyAccounts.Services
                 company.LogoPath = await UploadFileAsync(company.LogoImage);
             }
             var subscriptionIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst("SubscriptionId")?.Value;
-            if (subscriptionIdClaim != null) {
+            if (subscriptionIdClaim != null)
+            {
                 company.SubscriptionId = int.Parse(subscriptionIdClaim);
             }
             await _context.AddAsync(company);

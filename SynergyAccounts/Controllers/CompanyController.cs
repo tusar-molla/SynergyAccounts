@@ -14,18 +14,18 @@ namespace SynergyAccounts.Controllers
         {
             _companyService = companyService;
         }
-        public async Task<IActionResult> Index()
-        {
-            var companies = await _companyService.GetAllAsync();
-            return View(companies);
-        }
+        // public async Task<IActionResult> Index()
+        // {
+        //     var companies = await _companyService.GetAllAsync();
+        //     return View(companies);
+        // }
 
-        public async Task<IActionResult> Details(int id)
-        {
-            var company = await _companyService.GetByIdAsync(id);
-            if (company == null) return NotFound();
-            return View(company);
-        }
+        // public async Task<IActionResult> Details(int id)
+        // {
+        //     var company = await _companyService.GetByIdAsync(id);
+        //     if (company == null) return NotFound();
+        //     return View(company);
+        // }
 
         public IActionResult CreateCompany() => View();
 

@@ -6,5 +6,6 @@ namespace SynergyAccounts.Interface
     {
         Task<bool> CreateCompanyAsync(Company company);
         Task<bool> UpdateCompanyAsync(Company company);
+        Task<Company> GetByIdAsync(int Id); 
     }
 }
