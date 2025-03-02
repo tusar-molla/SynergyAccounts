@@ -70,7 +70,7 @@ namespace SynergyAccounts.Controllers
             }
             try
             {
-                var user = await _authService.LoginAsync(loginDto.Email, loginDto.Password);
+                var user = await _authService.LoginAsync(loginDto.Email!, loginDto.Password!);
 
                 // Create claims for the user
 

@@ -25,7 +25,7 @@ namespace SynergyAccounts.Controllers
             catch (Exception ex)
             {
                 // Log exception here in production
-                return StatusCode(500, "An error occurred while retrieving companies.");
+                return StatusCode(500, "An error occurred while retrieving companies."+ex.Message);
             }
         }
 
@@ -43,7 +43,7 @@ namespace SynergyAccounts.Controllers
             catch (Exception ex)
             {
                 // Log exception here in production
-                return StatusCode(500, "An error occurred while retrieving company details.");
+                return StatusCode(500, "An error occurred while retrieving company details."+ex.Message);
             }
         }
 
@@ -71,7 +71,7 @@ namespace SynergyAccounts.Controllers
             catch (Exception ex)
             {
                 // Log exception here in production
-                ModelState.AddModelError(string.Empty, "An error occurred while creating the company.");
+                ModelState.AddModelError(string.Empty, "An error occurred while creating the company."+ex.Message);
                 return View(company);
             }
         }
@@ -90,7 +90,7 @@ namespace SynergyAccounts.Controllers
             catch (Exception ex)
             {
                 // Log exception here in production
-                return StatusCode(500, "An error occurred while retrieving company details.");
+                return StatusCode(500, "An error occurred while retrieving company details."+ex.Message);
             }
         }
 
@@ -116,7 +116,7 @@ namespace SynergyAccounts.Controllers
             catch (Exception ex)
             {
                 // Log exception here in production
-                ModelState.AddModelError(string.Empty, "An error occurred while updating the company.");
+                ModelState.AddModelError(string.Empty, "An error occurred while updating the company."+ex.Message);
                 return View(company);
             }
         }

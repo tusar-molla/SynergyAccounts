@@ -49,7 +49,7 @@ namespace SynergyAccounts.Services
             if (company == null)
                 throw new ArgumentNullException(nameof(company));
 
-            if (await IsCompanyNameExistsAsync(company.Name))
+            if (await IsCompanyNameExistsAsync(company.Name!))
                 return false;
 
             if (company.LogoImage != null)
