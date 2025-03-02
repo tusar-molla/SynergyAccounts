@@ -1,21 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SynergyAccounts.Data;
 using SynergyAccounts.Interface;
 using SynergyAccounts.Models;
-using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+
 
 namespace SynergyAccounts.Services
 {
-    public class CompanyService : GenericService<Company>, ICompanyService
+    public class CompanyService : ICompanyService
     {
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CompanyService(AppDbContext context, IWebHostEnvironment webHostEnvironment) : base(context)
+        public CompanyService(AppDbContext context, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<bool> IsCompanyNameExistsAsync(string name)
@@ -29,37 +31,33 @@ namespace SynergyAccounts.Services
             {
                 company.LogoPath = await UploadFileAsync(company.LogoImage);
             }
-
-            await AddAsync(company);
+            var subscriptionIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst("SubscriptionId")?.Value;
+            if (subscriptionIdClaim != null) {
+                company.SubscriptionId = int.Parse(subscriptionIdClaim);
+            }
+            await _context.AddAsync(company);
+            await _context.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> UpdateCompanyAsync(Company company)
         {
-            // Ensure the company exists
-            var existingCompany = await GetByIdAsync(company.Id);
+            var existingCompany = await _context.Companies.FirstOrDefaultAsync(c => c.Id == company.Id);
             if (existingCompany == null) return false;
 
-            // Prevent duplicate names (except for itself)
             if (await _context.Companies.AnyAsync(c => c.Name == company.Name && c.Id != company.Id))
             {
                 return false;
             }
-
-            // Handle file upload
             if (company.LogoImage != null)
             {
-                // Delete old logo if exists
                 if (!string.IsNullOrEmpty(existingCompany.LogoPath))
                 {
                     DeleteFile(existingCompany.LogoPath);
                 }
-
-                // Upload new logo
                 existingCompany.LogoPath = await UploadFileAsync(company.LogoImage);
             }
 
-            // Update other fields
             existingCompany.Name = company.Name;
             existingCompany.TagLine = company.TagLine;
             existingCompany.VatRegistrationNo = company.VatRegistrationNo;
@@ -69,7 +67,8 @@ namespace SynergyAccounts.Services
             existingCompany.ContactNumber = company.ContactNumber;
             existingCompany.Address = company.Address;
             existingCompany.Remarks = company.Remarks;
-            await UpdateAsync(existingCompany);
+            _context.Update(existingCompany);
+            await _context.SaveChangesAsync();
             return true;
         }
 
@@ -102,7 +101,7 @@ namespace SynergyAccounts.Services
                 await file.CopyToAsync(fileStream);
             }
 
-            return $"/images/{uniqueFileName}"; // Return relative path
+            return $"/images/{uniqueFileName}";
         }
     }
 }

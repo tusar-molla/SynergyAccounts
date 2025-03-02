@@ -2,7 +2,7 @@
 
 namespace SynergyAccounts.Interface
 {
-    public interface ICompanyService : IGenericService<Company>
+    public interface ICompanyService
     {
         Task<bool> CreateCompanyAsync(Company company);
         Task<bool> UpdateCompanyAsync(Company company);
