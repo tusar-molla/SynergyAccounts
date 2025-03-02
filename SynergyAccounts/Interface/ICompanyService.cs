@@ -4,8 +4,10 @@ namespace SynergyAccounts.Interface
 {
     public interface ICompanyService
     {
+        Task<List<Company>> GetAllAsync();  
+        Task<Company> GetByIdAsync(int id);
         Task<bool> CreateCompanyAsync(Company company);
         Task<bool> UpdateCompanyAsync(Company company);
-        Task<Company> GetByIdAsync(int Id); 
+        Task<bool> IsCompanyNameExistsAsync(string name); 
     }
 }
