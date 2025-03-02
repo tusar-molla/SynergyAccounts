@@ -55,8 +55,9 @@ namespace SynergyAccounts.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public async Task <IActionResult> Login()
         {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return View(new LoginDto());
         }
 
@@ -96,7 +97,7 @@ namespace SynergyAccounts.Controllers
                     });
 
                 TempData["SuccessMessage"] = $"Welcome back, {user.FullName}!";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Dashboard", "Home");
             }
             catch (Exception ex)
             {
@@ -107,7 +108,7 @@ namespace SynergyAccounts.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Dashboard", "Home");
+            return RedirectToAction("Login", "Auth");
         }
 
         public IActionResult AccessDenied()

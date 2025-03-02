@@ -14,6 +14,7 @@ namespace SynergyAccounts.Controllers
         {
             _companyService = companyService;
         }
+        [HttpGet]
         public async Task<IActionResult> Company()
         {
             var company = await _companyService.GetCompanyBySubscriptionId();
@@ -39,8 +40,8 @@ namespace SynergyAccounts.Controllers
                 {                    
                     bool isCreated = await _companyService.CreateCompanyAsync(company);
                     if (!isCreated)
-                    {
-                        ModelState.AddModelError("Name", "A company already exists for this SubscriptionId.");
+                    {                       
+                        TempData["ErrorMessage"] = "A company already exists for this SubscriptionId.";
                         return View(company);
                     }
                 }
@@ -49,11 +50,11 @@ namespace SynergyAccounts.Controllers
                     bool isUpdated = await _companyService.UpdateCompanyAsync(company);
                     if (!isUpdated)
                     {
-                        ModelState.AddModelError("Name", "Company name already exists or update failed.");
+                        TempData["ErrorMessage"] = "Company name already exists or update failed";
                         return View(company);
                     }
                 }
-
+                TempData["SuccessMessage"] = "Company Created Successfully";
                 return RedirectToAction("Company");
             }
             catch (Exception ex)
