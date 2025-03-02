@@ -72,7 +72,6 @@ namespace SynergyAccounts.Controllers
             {
                 var user = await _authService.LoginAsync(loginDto.Email!, loginDto.Password!);
 
-                // Create claims for the user
 
                 var claims = new List<Claim>
                 {
@@ -80,23 +79,20 @@ namespace SynergyAccounts.Controllers
                     new Claim(ClaimTypes.Email, user.Email!),
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Role, user.RoleId == 1 ? "SuperAdmin" : user.RoleId == 2 ? "Admin" : "Operator"),
-                    // Assuming RoleId 1 is SuperAdmin 2 is Admin 3 is Operator
-                    new Claim("SubscriptionId", user.SubscriptionId.ToString()) // Add SubscriptionId as a custom claim
+                    new Claim("SubscriptionId", user.SubscriptionId.ToString()) 
                 };
 
-                // Create identity and principal
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-                // Sign in the user with cookie authentication
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     claimsPrincipal,
                     new AuthenticationProperties
                     {
-                        IsPersistent = true, // Keeps the cookie across browser sessions
-                        ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30), // Matches your 5-minute expiration
-                        AllowRefresh = true // Enables sliding expiration
+                        IsPersistent = true,
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30), 
+                        AllowRefresh = true 
                     });
 
                 TempData["SuccessMessage"] = $"Welcome back, {user.FullName}!";
