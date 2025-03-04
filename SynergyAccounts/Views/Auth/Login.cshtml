@@ -5,12 +5,11 @@
     Layout = "~/Views/Shared/_LayoutWithoutNav.cshtml";
 }
 
+<div class="card shadow-lg p-4 w-100" style="max-width: 400px;">
+    <h3 class="text-center mb-4 text-primary">SynergyAccount</h3>
 
-<div class="login-card">
-    <h3 class="text-center mb-4">SynergyAccount</h3>
+    <p class="text-center mb-4">Don't have an account? <a asp-controller="Auth" asp-action="Register" class="text-decoration-underline text-primary">Create one</a></p>
 
-    <p> Don't have an account ? <a asp-controller="Auth" asp-action="Register"
-            style="text-decoration: underline;">Create one</a></p>
     <form method="post">
         <div class="mb-3">
             <label for="Email" class="form-label">Email</label>
@@ -18,7 +17,7 @@
         </div>
         <div class="mb-3">
             <label for="Password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="Password" name="Password" required />   
+            <input type="password" class="form-control" id="Password" name="Password" required />
         </div>
         <button type="submit" class="btn btn-primary w-100">Login</button>
     </form>
