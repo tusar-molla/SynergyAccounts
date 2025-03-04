@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Company\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
